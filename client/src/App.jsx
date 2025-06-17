@@ -6,39 +6,74 @@ function App() {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState("");
+  const [mood, setMood] = useState("");
+  const [playlistLink, setPlaylistLink] = useState("");
 
-  const getWeather = async () => {
+  const moodPlaylists = {
+    "happy": "https://open.spotify.com/playlist/37i9dQZF1DXdPec7aLTmlC",
+    "sad": "https://open.spotify.com/playlist/37i9dQZF1DX7qK8ma5wgG1",
+    "angry": "https://open.spotify.com/playlist/37i9dQZF1DWYxwmBaMqxsl",
+    "tired": "https://open.spotify.com/playlist/37i9dQZF1DWZd79rJ6a7lp",
+    "excited": "https://open.spotify.com/playlist/37i9dQZF1DWZAfFsnPda0S",
+    "meh": "https://open.spotify.com/playlist/37i9dQZF1DWU0ScTcjJBdj"
+  };
+
+  const fetchWeather = async () => {
     try {
-      setError("");
-      const res = await axios.get(`http://localhost:5000/api/weather/${city}`);
+      const res = await axios.get(`http://localhost:5000/weather/${city}`);
       setWeather(res.data);
+      setError("");
     } catch (err) {
       console.error(err);
+      setWeather(null);
       setError("Could not fetch weather. Please check the city name.");
     }
   };
 
   return (
     <div className="app">
-      <h1>🍴 ForkCast</h1>
-      <p>Predict your cravings based on mood and weather!</p>
-      <input
-        type="text"
-        placeholder="Enter city (e.g., delhi)"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-      />
-      <button onClick={getWeather}>Get Weather</button>
+      <div className="glass-card">
+        <h1>🍴 ForkCast</h1>
+        <p>Predict your cravings based on mood and weather!</p>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        <input
+          type="text"
+          placeholder="Enter city (e.g., delhi)"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+        />
+        <button onClick={fetchWeather}>Get Weather</button>
 
-      {weather && (
-        <div>
-          <h2>{weather.name}</h2>
-          <p>Temperature: {(weather.main.temp - 273.15).toFixed(1)}°C</p>
-          <p>Condition: {weather.weather[0].description}</p>
+        {weather && (
+          <div className="weather-info">
+            <p><strong>{weather.name}</strong>: {weather.weather[0].description}</p>
+            <p>🌡️ Temp: {(weather.main.temp - 273.15).toFixed(1)}°C</p>
+          </div>
+        )}
+        {error && <p className="error">{error}</p>}
+
+        <div className="mood-section">
+          <label>How are you feeling?</label>
+          <select value={mood} onChange={(e) => {
+            setMood(e.target.value);
+            setPlaylistLink(moodPlaylists[e.target.value]);
+          }}>
+            <option value="">--Select Mood--</option>
+            <option value="happy">😄 Happy</option>
+            <option value="sad">😢 Sad</option>
+            <option value="angry">😡 Angry</option>
+            <option value="tired">😴 Tired</option>
+            <option value="excited">🤩 Excited</option>
+            <option value="meh">😐 Meh</option>
+          </select>
         </div>
-      )}
+
+        {playlistLink && (
+          <a href={playlistLink} target="_blank" rel="noreferrer" className="playlist-link">
+            🎧 Open Your Mood Playlist
+          </a>
+        )}
+      </div>
     </div>
   );
 }

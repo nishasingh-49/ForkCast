@@ -52,7 +52,7 @@ function App() {
     } catch (err) {
       console.error(err);
       setWeather(null);
-      setError("Could not fetch weather. Please check the city name.");
+      setError("Could not fetch the weather. Please check the city name and try again.");
     }
   };
 

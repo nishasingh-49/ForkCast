@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
 
@@ -8,15 +8,41 @@ function App() {
   const [error, setError] = useState("");
   const [mood, setMood] = useState("");
   const [playlistLink, setPlaylistLink] = useState("");
+  const [currentTipIndex, setCurrentTipIndex] = useState(0);
+{mood && (
+  <div className="glass-overlay glow-border">
+    <p>🌈 You’re feeling <strong>{mood}</strong> today</p>
+    <p>We got the perfect vibe for you 🎶</p>
+  </div>
+)}
 
   const moodPlaylists = {
-    "happy": "https://open.spotify.com/playlist/37i9dQZF1DXdPec7aLTmlC",
-    "sad": "https://open.spotify.com/playlist/37i9dQZF1DX7qK8ma5wgG1",
-    "angry": "https://open.spotify.com/playlist/37i9dQZF1DWYxwmBaMqxsl",
-    "tired": "https://open.spotify.com/playlist/37i9dQZF1DWZd79rJ6a7lp",
-    "excited": "https://open.spotify.com/playlist/37i9dQZF1DWZAfFsnPda0S",
-    "meh": "https://open.spotify.com/playlist/37i9dQZF1DWU0ScTcjJBdj"
+    happy: "https://open.spotify.com/playlist/37i9dQZF1DXdPec7aLTmlC",
+    sad: "https://open.spotify.com/playlist/37i9dQZF1DX7qK8ma5wgG1",
+    angry: "https://open.spotify.com/playlist/37i9dQZF1DWYxwmBaMqxsl",
+    tired: "https://open.spotify.com/playlist/37i9dQZF1DWZd79rJ6a7lp",
+    excited: "https://open.spotify.com/playlist/37i9dQZF1DWZAfFsnPda0S",
+    meh: "https://open.spotify.com/playlist/37i9dQZF1DWU0ScTcjJBdj"
   };
+
+  const forkTips = [
+    "💡 Craving spicy? Try pairing it with something sweet to balance it.",
+    "🍽️ Mood swings? Carbs are brain’s cuddle buddies.",
+    "🥑 Avocados help with stress — smooth, green therapists.",
+    "🍫 Dark chocolate = serotonin magic.",
+    "🧠 Weather impacts cravings — cozy rain calls for hot soup!",
+    "🫖 Herbal teas can boost your mood and calm anxiety.",
+    "💧 Drink water before snacking — hunger and thirst are messy twins.",
+    "🔥 Angry? Crunchy snacks give a mini rage outlet."
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTipIndex((prev) => (prev + 1) % forkTips.length);
+    }, 5000); // Change tip every 5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   const fetchWeather = async () => {
     try {
@@ -54,10 +80,13 @@ function App() {
 
         <div className="mood-section">
           <label>How are you feeling?</label>
-          <select value={mood} onChange={(e) => {
-            setMood(e.target.value);
-            setPlaylistLink(moodPlaylists[e.target.value]);
-          }}>
+          <select
+            value={mood}
+            onChange={(e) => {
+              setMood(e.target.value);
+              setPlaylistLink(moodPlaylists[e.target.value]);
+            }}
+          >
             <option value="">--Select Mood--</option>
             <option value="happy">😄 Happy</option>
             <option value="sad">😢 Sad</option>
@@ -69,10 +98,19 @@ function App() {
         </div>
 
         {playlistLink && (
-          <a href={playlistLink} target="_blank" rel="noreferrer" className="playlist-link">
+          <a
+            href={playlistLink}
+            target="_blank"
+            rel="noreferrer"
+            className="playlist-link"
+          >
             🎧 Open Your Mood Playlist
           </a>
         )}
+
+        <div className="fork-tip">
+          <p>{forkTips[currentTipIndex]}</p>
+        </div>
       </div>
     </div>
   );

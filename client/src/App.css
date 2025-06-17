@@ -1,77 +1,242 @@
 /* App.css */
-
-.app {
-  height: 100vh;
-  width: 100vw;
-  background: url('https://images.unsplash.com/photo-1558089594-3733127b6a0c?w=1500') no-repeat center center/cover;
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  height: 100%;
+  width: 100%;
+  background: url('https://images.unsplash.com/photo-1558089594-3733127b6a0c?w=1500') no-repeat center center fixed;
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Animations */
+@keyframes fadeDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
   border-radius: 20px;
   padding: 40px 30px;
   width: 90%;
   max-width: 400px;
   color: #fff;
   text-align: center;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+  animation: fadeDrop 0.8s ease forwards;
+}
+
+.glass-card h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.glass-card p {
+  margin: 10px 0;
+  font-size: 1rem;
 }
 
 input, select {
   width: 100%;
   padding: 10px;
-  margin-top: 10px;
-  margin-bottom: 15px;
+  margin: 10px 0 15px;
   border-radius: 10px;
   border: none;
   font-size: 1rem;
 }
 
 button {
-  background-color: #ffffffaa;
-  color: #222;
-  padding: 10px 20px;
+  width: 100%;
+  padding: 12px;
+  background: #ff7eb9;
   border: none;
   border-radius: 10px;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease;
+  color: white;
+  font-size: 1rem;
+  transition: background 0.3s;
 }
 
 button:hover {
-  background-color: #fff;
-}
-
-.playlist-link {
-  display: inline-block;
-  margin-top: 20px;
-  background: #1db954;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 10px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background 0.3s ease;
-}
-
-.playlist-link:hover {
-  background: #17a64a;
+  background: #ff3cac;
+  animation: pulse 0.6s ease-in-out infinite;
 }
 
 .weather-info {
   margin-top: 15px;
-  font-size: 1.1rem;
 }
 
 .error {
-  color: #ffdddd;
-  background-color: #550000aa;
-  padding: 10px;
-  border-radius: 10px;
+  color: #ffbaba;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.mood-section label {
+  display: block;
   margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.playlist-link {
+  display: inline-block;
+  margin-top: 15px;
+  color: #fff;
+  text-decoration: none;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 10px 15px;
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.playlist-link:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.glass-card:hover {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2),
+              0 0 40px rgba(255, 126, 185, 0.3),
+              0 0 60px rgba(255, 60, 172, 0.25);
+  transition: box-shadow 0.4s ease-in-out;
+}
+/* ✨ Mood-based background animations ✨ */
+
+@keyframes happyGlow {
+  0% { filter: brightness(1) hue-rotate(0deg); }
+  100% { filter: brightness(1.1) hue-rotate(20deg); }
+}
+
+@keyframes sadWave {
+  0% { filter: grayscale(0.2) brightness(0.9); }
+  100% { filter: grayscale(0.5) brightness(0.7); }
+}
+
+@keyframes angryPulse {
+  0% { filter: hue-rotate(0deg) brightness(1); }
+  100% { filter: hue-rotate(-20deg) brightness(1.1); }
+}
+
+@keyframes tiredFade {
+  0% { filter: brightness(1); }
+  100% { filter: brightness(0.7) blur(2px); }
+}
+
+@keyframes excitedShimmer {
+  0% { filter: hue-rotate(0deg) brightness(1); }
+  100% { filter: hue-rotate(60deg) brightness(1.2); }
+}
+
+@keyframes mehDim {
+  0% { filter: grayscale(0.3); }
+  100% { filter: grayscale(0.6); }
+}
+
+/* 🎨 Mood classes added to body dynamically */
+
+body.happy-bg {
+  animation: happyGlow 8s infinite alternate;
+}
+
+body.sad-bg {
+  animation: sadWave 10s infinite alternate;
+}
+
+body.angry-bg {
+  animation: angryPulse 6s infinite alternate;
+}
+
+body.tired-bg {
+  animation: tiredFade 10s infinite alternate;
+}
+
+body.excited-bg {
+  animation: excitedShimmer 5s infinite alternate;
+}
+
+body.meh-bg {
+  animation: mehDim 12s infinite alternate;
+}
+.fork-tip {
+  margin-top: 25px;
+  background-color: rgba(255, 255, 255, 0.08);
+  padding: 10px 15px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  color: #fefefe;
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.glass-overlay {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  border-radius: 15px;
+  padding: 15px;
+  margin-top: 20px;
+  animation: fadeDrop 1s ease forwards;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+/* Neon Glow Borders */
+.glow-border {
+  border: 2px solid transparent;
+  border-image: linear-gradient(45deg, #ff7eb9, #ff65a3, #7afcff, #feff9c) 1;
+  animation: glowPulse 3s linear infinite;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 10px #ff7eb9;
+  }
+  50% {
+    box-shadow: 0 0 20px #7afcff;
+  }
+  100% {
+    box-shadow: 0 0 10px #ff65a3;
+  }
 }

@@ -42,7 +42,7 @@ ForkCast is a playful, mood-aware, weather-synced web app that predicts what kin
 
 ```bash
 # Clone the repo
-git clone https://github.com/your-username/ForkCast.git
+git clone https://github.com/nishasingh-49/ForkCast.git
 
 # Navigate to frontend
 cd forkcast-frontend

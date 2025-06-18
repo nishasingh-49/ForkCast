@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./Recommendations.css";
 

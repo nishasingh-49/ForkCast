@@ -1,4 +1,4 @@
-# 🍴 ForkCast
+# ForkCast
 
 **Mood-based cravings? Weather-driven vibes? Welcome to ForkCast — the only forecast that tells you what your *soul* wants to eat.**
 
@@ -38,7 +38,7 @@ ForkCast is a playful, mood-aware, weather-synced web app that predicts what kin
 
 ---
 
-## 📦 How to Run Locally
+## How to Run Locally
 
 ```bash
 # Clone the repo

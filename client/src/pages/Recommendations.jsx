@@ -91,6 +91,7 @@ const Recommendations = () => {
               backgroundImage: `url(${foodThumbnails[food] || 'https://via.placeholder.com/300?text=Loading...'})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
+              position: "relative"
             }}
           >
             <div className="food-item-content">

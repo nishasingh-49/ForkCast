@@ -1,11 +1,11 @@
-import { startTransition, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./Recommendations.css";
 
 const foodMap = {
   happy: ["Fruit Salad", "Ice Cream", "Smoothies", "Waffles", "Cupcakes", "Pancakes", "Mango Tart", "Lemonade"],
   sad: ["Mac and Cheese", "Chocolate Cake", "Ramen", "Brownies", "Hot Soup", "Pudding", "Grilled Cheese", "Cookies"],
-  angry: ["Spicy Wings", "Nachos", "Crunchy Tacos", "Chili", "Buffalo Cauliflower", "Hot Cheetos", "Szechuan Noodles"],
+  angry: ["Spicy Wings", "Nachos", "Crunchy Tacos", "Chili Potatoes", "Buffalo Cauliflower", "Hot Cheetos", "Schezwan Noodles"],
   tired: ["Coffee", "Energy Bars", "Peanut Butter Toast", "Oatmeal", "Granola", "Banana Bread", "Trail Mix", "Smoothie Bowl"],
   excited: ["Pizza", "Sushi", "Burgers", "Spring Rolls", "Tacos", "Mozzarella Sticks", "Quesadilla", "Corn Dogs"],
   meh: ["Toast", "Pasta", "Rice Bowl", "Sandwich", "Fried Rice", "Omelette", "Instant Noodles", "Cereal"]
@@ -18,11 +18,13 @@ const Recommendations = () => {
   const [recipeData, setRecipeData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [foodThumbnails, setFoodThumbnails] = useState({});
+  const [hoveredFood, setHoveredFood] = useState(null);
+  const [foodNutrition, setFoodNutrition] = useState({});
   const apiKey = import.meta.env.VITE_SPOONACULAR_API_KEY;
 
   const foodSuggestions = foodMap[mood?.toLowerCase()] || [];
 
-  // ⭐ Fetch thumbnails when mood changes
+  // Fetch thumbnails
   useEffect(() => {
     const fetchThumbnails = async () => {
       const thumbnails = {};
@@ -37,7 +39,7 @@ const Recommendations = () => {
               thumbnails[food] = data.results[0].image;
             }
           } catch (err) {
-            console.error(`Failed to fetch thumbnail for ${food}`, err);
+            console.error(`Thumbnail error for ${food}`, err);
           }
         })
       );
@@ -47,6 +49,30 @@ const Recommendations = () => {
     if (mood && apiKey) fetchThumbnails();
   }, [mood, apiKey]);
 
+  // Fetch nutrition facts on hover
+  const fetchNutrition = async (food) => {
+    if (foodNutrition[food]) return; // already fetched
+
+    try {
+      const res = await fetch(
+        `https://api.spoonacular.com/recipes/guessNutrition?title=${food}&apiKey=${apiKey}`
+      );
+      const data = await res.json();
+      setFoodNutrition((prev) => ({
+        ...prev,
+        [food]: {
+          calories: data.calories?.value + " kcal",
+          protein: data.protein?.value + " " + data.protein?.unit,
+          fat: data.fat?.value + " " + data.fat?.unit,
+          carbs: data.carbs?.value + " " + data.carbs?.unit
+        }
+      }));
+    } catch (err) {
+      console.error(`Nutrition error for ${food}`, err);
+    }
+  };
+
+  // Fetch full recipe
   const fetchRecipe = async (food) => {
     setLoading(true);
     setSelectedFood(food);
@@ -70,7 +96,7 @@ const Recommendations = () => {
     return (
       <div className="recommendations-container">
         <h2>⚠️ Oops!</h2>
-        <p>We didn’t receive your mood or weather info. Please go back and try again.</p>
+        <p>Please go back and re-enter your mood and weather.</p>
       </div>
     );
   }
@@ -84,21 +110,36 @@ const Recommendations = () => {
 
       <div className="food-list">
         {foodSuggestions.map((food, index) => (
+          
           <div
-            key={index}
-            className="food-item"
-            style={{
-              backgroundImage: `url(${foodThumbnails[food] || 'https://via.placeholder.com/300?text=Loading...'})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              position: "relative"
-            }}
-          >
-            <div className="food-item-content">
-              <p className="glass-food-name">{food}</p>
-              <button onClick={() => fetchRecipe(food)}>View Recipe</button>
-            </div>
-          </div>
+  key={index}
+  className="food-item"
+  style={{
+    backgroundImage: `url(${foodThumbnails[food] || 'https://via.placeholder.com/300?text=Loading...'})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    position: "relative",
+  }}
+  onMouseEnter={() => setHoveredFood(food)}
+  onMouseLeave={() => setHoveredFood(null)}
+>
+  {/* 👇 TOOLTIP GOES HERE 👇 */}
+  {hoveredFood === food && foodNutrition[food] && (
+    <div className="nutrition-tooltip">
+      <p><strong>⚡ {foodNutrition[food].calories}</strong></p>
+      <p>🥩 {foodNutrition[food].protein}</p>
+      <p>🍞 {foodNutrition[food].carbs}</p>
+      <p>🧈 {foodNutrition[food].fat}</p>
+    </div>
+  )}
+
+  {/* Food content inside */}
+  <div className="food-item-content">
+    <p className="glass-food-name">{food}</p>
+    <button onClick={() => fetchRecipe(food)}>View Recipe</button>
+  </div>
+</div>
+
         ))}
       </div>
 

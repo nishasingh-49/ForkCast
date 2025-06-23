@@ -32,28 +32,13 @@ ForkCast is a playful, mood-aware, weather-synced web app that predicts what kin
 
 ## Tech Stack
 
-          ┌───────────────────────────┐
-          │       Frontend UI         │
-          │      (React + CSS)        │
-          │   ➤ Mood Selector        │
-          │   ➤ Weather Vibes        │
-          │   ➤ ForkTips Widget      │
-          │   ➤ Glassmorphism UI     │
-          └────────────▲──────────────┘
-                       │
-                       ▼
-          ┌───────────────────────────┐
-          │        Backend API        │
-          │      (Node.js + Express)  │
-          │   ➤ Weather Fetcher      │
-          │   ➤ Mood Craving Logic   │
-          └────────────▲──────────────┘
-                       │
-                       ▼
-    ┌────────────────────────────┐   ┌────────────────────────────┐
-    │    OpenWeatherMap API      │   │    Spotify Playlist Links  |
-    │ ➤ Live weather data       │   │ ➤ Mood-matched music       |
-    └────────────────────────────┘   └────────────────────────────┘
+| Layer          | Tools / Services                                                         |
+| -------------- | ------------------------------------------------------------------------ |
+| **Frontend**   | React.js, CSS (Glassmorphism), Animations                                |
+| **Backend**    | Node.js, Express.js                                                      |
+| **APIs**       | OpenWeatherMap API (live weather), Spotify (mood-based static playlists) |
+| **Deployment** | **Frontend:** Vercel          <br>**Backend:** Render                    |
+
 
 
 ---

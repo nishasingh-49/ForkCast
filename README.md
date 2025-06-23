@@ -1,6 +1,7 @@
 # ForkCast
 
-**Mood-based cravings? Weather-driven vibes? Welcome to ForkCast — the only forecast that tells you what your *soul* wants to eat(haha, for indecisive people like me :)).**
+**Mood-based cravings? Weather-driven vibes? Welcome to ForkCast — the only forecast that tells you what your *soul* wants to eat.**<br>
+(mainly for the indecisive people like me lmao)
 
 
 ## What is ForkCast?

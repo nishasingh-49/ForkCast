@@ -40,6 +40,7 @@ ForkCast is a playful, mood-aware, weather-synced web app that predicts what kin
 ---
 
 ## How to Run Locally
+(ALSO, DONT FORGET TO ADD YOUR OWN APIs!!)
 
 ```bash
 # Clone the repo
